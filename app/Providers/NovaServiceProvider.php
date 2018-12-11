@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Nova\Metrics\AllCourses;
+use App\Nova\Metrics\AllQuestions;
+use App\Nova\Metrics\QuestionsPerDay;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Cards\Help;
 use Illuminate\Support\Facades\Gate;
@@ -56,7 +59,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            new Help,
+            new QuestionsPerDay(),
+            new AllCourses(),
+            new AllQuestions(),
         ];
     }
 

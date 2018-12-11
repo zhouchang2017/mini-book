@@ -25,7 +25,7 @@ class Question extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -34,32 +34,33 @@ class Question extends Resource
      */
     public static $search = [
         'id',
+        'name',
+        'body',
     ];
+
+    public static $with = ['type', 'chapter'];
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Type'),
-            BelongsTo::make('Chapter'),
+            BelongsTo::make(__('Type'), 'type', Type::class),
+            BelongsTo::make(__('Chapter'), 'chapter', Chapter::class),
             Text::make('Name'),
-
-            Markdown::make('Body')
-
-
+            Markdown::make('Body'),
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -70,7 +71,7 @@ class Question extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -81,7 +82,7 @@ class Question extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -92,11 +93,21 @@ class Question extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)
     {
         return [];
+    }
+
+    public static function singularLabel()
+    {
+        return __(class_basename(self::class));
+    }
+
+    public static function label()
+    {
+        return __(class_basename(self::class));
     }
 }

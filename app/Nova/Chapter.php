@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
@@ -31,12 +32,15 @@ class Chapter extends Resource
      */
     public static $search = [
         'id',
+        'name',
     ];
+
+    public static $displayInNavigation = false;
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
@@ -46,14 +50,16 @@ class Chapter extends Resource
 
             Text::make('Name'),
 
-            HasMany::make('Questions')
+            BelongsTo::make(__('Course'),'course',Course::class),
+
+            HasMany::make(__('Question'),'questions',Question::class),
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -64,7 +70,7 @@ class Chapter extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -75,7 +81,7 @@ class Chapter extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -86,11 +92,22 @@ class Chapter extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)
     {
         return [];
+    }
+
+
+    public static function singularLabel()
+    {
+        return __(class_basename(self::class));
+    }
+
+    public static function label()
+    {
+        return __(class_basename(self::class));
     }
 }

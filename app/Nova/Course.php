@@ -22,7 +22,7 @@ class Course extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -31,6 +31,8 @@ class Course extends Resource
      */
     public static $search = [
         'id',
+        'name',
+        'code'
     ];
 
     /**
@@ -48,7 +50,7 @@ class Course extends Resource
 
             Text::make('Code'),
 
-            HasMany::make('Chapters')
+            HasMany::make(__('Chapter'), 'chapters', Chapter::class),
         ];
     }
 
@@ -94,5 +96,15 @@ class Course extends Resource
     public function actions(Request $request)
     {
         return [];
+    }
+
+    public static function singularLabel()
+    {
+        return __(class_basename(self::class));
+    }
+
+    public static function label()
+    {
+        return __(class_basename(self::class));
     }
 }

@@ -106,4 +106,14 @@ class User extends Resource
     {
         return [];
     }
+
+    public static function singularLabel()
+    {
+        return __(class_basename(self::class));
+    }
+
+    public static function label()
+    {
+        return __(class_basename(self::class));
+    }
 }
